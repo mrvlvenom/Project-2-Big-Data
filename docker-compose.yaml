@@ -1,0 +1,46 @@
+version: '3.9'
+
+services:
+  zookeeper:
+    image: 'bitnami/zookeeper:latest'
+    container_name: zookeeper
+    environment:
+      - ALLOW_ANONYMOUS_LOGIN=yes
+    ports:
+      - '2181:2181'
+
+  kafka:
+    image: 'bitnami/kafka:latest'
+    container_name: kafka
+    environment:
+      - KAFKA_BROKER_ID=1
+      - KAFKA_ZOOKEEPER_CONNECT=zookeeper:2181
+      - ALLOW_PLAINTEXT_LISTENER=yes
+      - KAFKA_LISTENERS=PLAINTEXT://:9092
+      - KAFKA_ADVERTISED_LISTENERS=PLAINTEXT://localhost:9092  # Menggunakan localhost
+    ports:
+      - '9092:9092'
+    depends_on:
+      - zookeeper
+
+  spark-master:
+    image: bitnami/spark:latest
+    container_name: spark-master
+    environment:
+      - SPARK_MODE=master
+    ports:
+      - '7077:7077'  # Spark master port
+
+  pyspark:
+    image: 'jupyter/pyspark-notebook:latest'
+    container_name: pyspark
+    environment:
+      - SPARK_MASTER=spark://spark-master:7077  # Terhubung ke spark-master
+    volumes:
+      - ./pyspark:/home/jovyan/work
+      - ./data:/home/jovyan/data
+      - ./models:/home/jovyan/models
+    ports:
+      - '8888:8888'
+    command: start-notebook.sh --NotebookApp.token=''
+
