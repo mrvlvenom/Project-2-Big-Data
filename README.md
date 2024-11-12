@@ -347,7 +347,79 @@ services:
 - `app.py` digunakan untuk routing endpoint
 
 ```
-SOURCE CODE MASUKIN
+import json
+import pandas as pd
+from flask import Flask, request, jsonify
+from sklearn.ensemble import RandomForestClassifier
+import joblib
+
+app = Flask(__name__)
+
+# Fungsi untuk mempersiapkan data dan memuat model
+def load_model():
+    model = joblib.load('model_1.pkl')  # Memuat model yang sudah disimpan
+    return model
+
+# Fungsi untuk memuat data dari file JSON
+def load_data_from_json():
+    with open('model_1_data.json', 'r') as file:  # Pastikan file JSON yang benar
+        data = json.load(file)
+    df = pd.DataFrame(data)
+    return df
+
+# Endpoint untuk memprediksi hujan atau tidak hujan
+@app.route('/predict_rain', methods=['POST'])
+def predict_rain():
+    data = request.get_json()
+    # Fitur yang dibutuhkan untuk prediksi
+    features = ['Temperature', 'Humidity', 'Wind_Speed', 'Cloud_Cover', 'Pressure']
+    
+    # Pastikan data yang diperlukan ada
+    if not all(feature in data for feature in features):
+        return jsonify({"error": "Missing required features"}), 400
+
+    # Menyiapkan input untuk prediksi
+    input_data = [[data['Temperature'], data['Humidity'], data['Wind_Speed'], data['Cloud_Cover'], data['Pressure']]]
+    
+    # Memuat model
+    model = load_model()
+    
+    # Prediksi menggunakan model
+    prediction = model.predict(input_data)
+    result = "rain" if prediction[0] == "rain" else "no rain"
+    
+    return jsonify({"prediction": result})
+
+# Endpoint untuk menghitung rata-rata temperatur ketika hujan dan tidak hujan
+@app.route('/avg_temperature', methods=['GET'])
+def avg_temperature():
+    # Membaca data dari JSON
+    df = load_data_from_json()
+    avg_temp_rain = df[df['Rain'] == 'rain']['Temperature'].mean()
+    avg_temp_no_rain = df[df['Rain'] == 'no rain']['Temperature'].mean()
+    
+    return jsonify({
+        "avg_temperature_rain": avg_temp_rain,
+        "avg_temperature_no_rain": avg_temp_no_rain
+    })
+
+# Endpoint untuk menghitung rata-rata wind speed ketika hujan dan tidak hujan
+@app.route('/avg_wind_speed', methods=['GET'])
+def avg_wind_speed():
+    # Membaca data dari JSON
+    df = load_data_from_json()
+    avg_wind_speed_rain = df[df['Rain'] == 'rain']['Wind_Speed'].mean()
+    avg_wind_speed_no_rain = df[df['Rain'] == 'no rain']['Wind_Speed'].mean()
+    
+    return jsonify({
+        "avg_wind_speed_rain": avg_wind_speed_rain,
+        "avg_wind_speed_no_rain": avg_wind_speed_no_rain
+    })
+
+if __name__ == '__main__':
+    app.run(debug=True)
+
+
 ```
 
 ---
@@ -364,6 +436,17 @@ Buat script untuk menjalankan skenario producer dan consumer. Pastikan consumer 
 ![Screenshot 2024-11-12 010000](https://github.com/user-attachments/assets/edf7097d-0842-4054-8e3d-d20227eb01c5)
 
 #### 3. Modelling Data
+Buat script (dalam study case ini kami menggunakan prep_data.py) untuk membagi batch aliran data yang masuk ke dalam 3 model. Skenario kami:
+- Model 1 : 800 data pertama
+- Model 2 : 800 data pertama + 800 data kedua
+- Model 3 : 800 data pertama + 800 data kedua + 900 data terakhir <br><br>
+
+Kemudian, buat script lagi untuk melatih model yang telah disiapkan. Model yang telah ditrain akan disimpan dalam format .pkl dan digunakan dalam endpoint.
+
+#### 4. Routing Endpoint
+Buat script untuk membuat endpoint (dalam study case ini kami menggunakan flask, codenya bisa dilihat pada app.py)
+
+
 
 ---
 
