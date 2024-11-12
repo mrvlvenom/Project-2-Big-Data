@@ -475,7 +475,7 @@ Gambar ini menunjukkan hasil dari permintaan API untuk mendapatkan rata-rata dua
 
 ### **1. Analisis Gambar Pertama (Prediksi hujan/tidak)**
 
-![alt text](image/image/hasil1-bigdata.jpeg)
+![alt text](image/hasil1-bigdata.jpeg)
 
 #### **a. Proses Sistem**:
 
