@@ -1,5 +1,3 @@
-file train_model.py
-
 import json
 import pandas as pd
 import numpy as np
@@ -8,7 +6,6 @@ from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score
 import joblib
 
-# Fungsi untuk mempersiapkan data
 def prepare_data(file_path, features, target, num_rows):
     # Membaca data dari file JSON
     with open(file_path, 'r') as f:
@@ -33,7 +30,7 @@ def prepare_data(file_path, features, target, num_rows):
 
 # Model 1: Prediksi Rain dengan 800 data pertama
 def train_model_1():
-    features = ['Temperature', 'Humidity', 'Pressure']
+    features = ['Temperature', 'Humidity', 'Pressure', 'Wind_Speed', 'Cloud_Cover']
     target = 'Rain'  # Kolom target untuk prediksi hujan
 
     # Menyiapkan data dari file model_data.json dengan 800 data pertama
@@ -61,7 +58,7 @@ def train_model_1():
 
 # Model 2: Prediksi Rain dengan 1600 data pertama
 def train_model_2():
-    features = ['Temperature', 'Humidity', 'Pressure']
+    features = ['Temperature', 'Humidity', 'Pressure', 'Wind_Speed', 'Cloud_Cover']
     target = 'Rain'  # Kolom target untuk prediksi hujan
 
     # Menyiapkan data dari file model_data.json dengan 1600 data pertama
@@ -89,7 +86,7 @@ def train_model_2():
 
 # Model 3: Prediksi Rain dengan semua data (2500 data)
 def train_model_3():
-    features = ['Temperature', 'Humidity', 'Pressure']
+    features = ['Temperature', 'Humidity', 'Pressure', 'Wind_Speed', 'Cloud_Cover']
     target = 'Rain'  # Kolom target untuk prediksi hujan
 
     # Menyiapkan data dari file model_data.json dengan semua data (2500)
@@ -121,5 +118,6 @@ def train_all_models():
     train_model_2()
     train_model_3()
 
-if _name_ == "_main_":
+if __name__ == "__main__":
     train_all_models()
+
