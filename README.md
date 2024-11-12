@@ -50,7 +50,7 @@ Terdapat 3 endpoint API untuk request user:
 
 #### C. Source Code
 
-- File `..consumer/consumer.py`
+- `consumer.py` digunakan untuk menerima data yang dikirim dari producer berdasarkan dataset yang tersedia
 
 ```
 from kafka import KafkaConsumer
@@ -102,7 +102,7 @@ with open("all_data.json", 'w') as f:
 
 ```
 
-- File `..producer/producer.py`
+- `producer.py` digunakan untuk mengirim data ke consumer berdasarkan dataset yang tersedia
 
 ```
 import pandas as pd
@@ -135,7 +135,7 @@ producer.close()
 
 ```
 
-- File `..model_data/prep_data.py`
+- `prep_data.py` digunakan untuk memisahkan data yang akan digunakan untuk melatih model
 
 ```
 import json
@@ -161,7 +161,7 @@ with open("model_3_data.json", 'w') as f:
 print("Data successfully split into model training datasets.")
 ```
 
-- File `..model_data/train_model.py`
+- `train_model.py` digunakan untuk melatih model berdasarkan batch data yang diterima consumer
 
 ```
 import json
@@ -290,7 +290,7 @@ if __name__ == "__main__":
 
 ```
 
-- File `docker-composer.yaml`
+- `docker-compose.yaml` digunakan untuk mengatur konfigurasi docker beberapa service yang dibutuhkan
 
 ```
 version: '3.9'
@@ -342,17 +342,32 @@ services:
 
 ```
 
+- `app.py` digunakan untuk routing endpoint
+
+```
+SOURCE CODE MASUKIN
+```
+
 ---
 
 ## Langkah-Langkah
 
-#### 1. Tulis langkah
+#### 1. Setup Docker
+
+Atur konfigurasi docker pada file `docker-compose.yaml` sesuai kebutuhan kemudian jalankan command `docker-compose up -d` untuk menjalankan service yang dibutuhkan
+
+#### 2. Setup Producer dan Consumer
+
+Buat script untuk menjalankan skenario producer dan consumer. Pastikan consumer dapat menerima aliran data yang dikirim producer berdasarkan dataset yang tersedia. <br><br>
+![Screenshot 2024-11-12 010000](https://github.com/user-attachments/assets/edf7097d-0842-4054-8e3d-d20227eb01c5)
+
+#### 3. Modelling Data
 
 ---
 
 ## Hasil
 
-![alt text](hasil1-bigdata.jpeg)
+![alt text](image/hasil1-bigdata.jpeg)
 
 ### **1. Endpoint API:**
 
@@ -410,7 +425,7 @@ API memprediksi **"tidak hujan" (no rain)** karena kombinasi nilai-nilai tersebu
 
 API memprediksi **"hujan" (rain)** karena kombinasi parameter ini menunjukkan kondisi atmosfer yang mendukung terjadinya hujan (kelembapan tinggi dan cakupan awan besar).
 
-![alt text](hasil2-bigdata.jpeg)
+![alt text](image/hasil2-bigdata.jpeg)
 
 Gambar ini menunjukkan hasil dari permintaan API untuk mendapatkan rata-rata dua parameter cuaca, yaitu suhu dan kecepatan angin, berdasarkan kondisi **"hujan" (rain)** atau **"tidak hujan" (no rain)**.
 
@@ -458,7 +473,7 @@ Gambar ini menunjukkan hasil dari permintaan API untuk mendapatkan rata-rata dua
 
 ### **1. Analisis Gambar Pertama (Prediksi hujan/tidak)**
 
-![alt text](hasil1-bigdata.jpeg)
+![alt text](image/image/hasil1-bigdata.jpeg)
 
 #### **a. Proses Sistem**:
 
@@ -509,7 +524,7 @@ Gambar ini menunjukkan hasil dari permintaan API untuk mendapatkan rata-rata dua
 
 ### **2. Analisis Gambar Kedua (Rata-Rata Parameter Cuaca)**
 
-![alt text](hasil2-bigdata.jpeg)
+![alt text](image/hasil2-bigdata.jpeg)
 
 #### **a. Endpoint `/avg_temperature`**
 
