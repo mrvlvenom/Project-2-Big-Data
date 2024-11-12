@@ -20,5 +20,9 @@
 Atur konfigurasi docker pada file `docker-compose.yaml` sesuai kebutuhan kemudian jalankan command `docker-compose up -d` untuk menjalankan service yang dibutuhkan
 
 ### 2. Setup Producer dan Consumer
-Buat script untuk menjalankan skenario producer dan consumer. Pastikan consumer dapat menerima aliran data yang dikirim producer berdasarkan dataset yang tersedia.
+Buat script untuk menjalankan skenario producer dan consumer. Pastikan consumer dapat menerima aliran data yang dikirim producer berdasarkan dataset yang tersedia. <br><br>
+![Screenshot 2024-11-12 010000](https://github.com/user-attachments/assets/edf7097d-0842-4054-8e3d-d20227eb01c5)
+
+### 3. Modelling Data
+
 
