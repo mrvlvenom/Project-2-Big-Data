@@ -4,7 +4,7 @@ import time
 from kafka import KafkaProducer
 import json
 
-# Membaca dataset cuaca
+# Membaca dataset
 data = pd.read_csv('/home/ilhanahmads/projek2/data/weather_forecast_data.csv')
 
 # Inisialisasi producer Kafka
